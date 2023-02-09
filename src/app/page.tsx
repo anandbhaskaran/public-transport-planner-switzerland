@@ -7,11 +7,16 @@ import React from "react";
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const [from, setFrom] = React.useState<string>("");
-  const [to, setTo] = React.useState<string>("");
 
-  const handleFromChange = (event:React.ChangeEvent<HTMLInputElement>) => {
-    setFrom(event.target.value);
+  const handleSubmit = (event: any) => {
+    event.preventDefault()
+
+    const data = {
+      from: event.target.from.value,
+      to: event.target.to.value,
+    }
+
+    console.log(data);
   };
 
   return (
@@ -41,28 +46,51 @@ export default function Home() {
         </div>
       </div>
 
-      <div className={styles.center}>
-        <div>
-        
+      <form onSubmit={handleSubmit}>
+      <div className="w-auto my-5">
         <label htmlFor="from" className="block text-xl font-bold">
-        From
-      </label>
-          <div className="mt-1">
-            <input
-              type="text"
-              name="from"
-              id="from"
-              className="block w-full rounded-md border-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="Starting point"
-              aria-describedby="from-description"
-              onChange={handleFromChange}
-              value={from}
-            />
-          </div>
-          <p className="mt-2 text-sm" id="from-description">
-            Starting point of your amazing journey
-          </p>
+          From
+        </label>
+        <div className="mt-1">
+          <input
+            type="text"
+            name="from"
+            id="from"
+            className="block w-full p-3 rounded-md border-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            placeholder="Starting point"
+            aria-describedby="from-description"
+            required
+          />
         </div>
+        <p className="mt-2 text-sm" id="from-description">
+          Starting point of your amazing journey
+        </p>
+      </div>
+
+      <div className="max-w-md w-auto my-5">
+        <label htmlFor="to" className="block text-xl font-bold">
+          To
+        </label>
+        <div className="mt-1">
+          <input
+            type="text"
+            name="to"
+            id="to"
+            className="block w-full p-3 rounded-md border-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            placeholder="Destination"
+            aria-describedby="to-description"
+            required
+          />
+        </div>
+        <p className="mt-2 text-sm" id="to-description">
+          Destination of your amazing journey
+        </p>
+      </div>
+      <button type="submit">Search connections</button>
+      </form>
+
+      <div className={styles.center}>
+
       </div>
     </main>
   )
