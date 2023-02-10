@@ -1,22 +1,9 @@
 "use client";
 
 import Image from "next/image";
-// import { Inter } from "@next/font/google";
 import React from "react";
 import styles from "./page.module.css";
-
-// const inter = Inter({ subsets: ["latin"] });
-
-const handleSubmit = (event: any) => {
-  event.preventDefault();
-
-  const data = {
-    from: event.target.from.value,
-    to: event.target.to.value,
-  };
-
-  console.log(data);
-};
+import Form from "@/app/form";
 
 export default function Home() {
   return (
@@ -54,63 +41,7 @@ export default function Home() {
           width={100}
           height={100}
         />
-        <form
-          name="journey"
-          onSubmit={handleSubmit}
-          className="w-1/3 flex flex-col mt-11"
-        >
-          <div className="w-auto my-5">
-            <label
-              htmlFor="from"
-              className="block text-sm font-medium text-gray-70"
-            >
-              From
-            </label>
-            <div className="mt-1">
-              <input
-                type="text"
-                name="from"
-                id="from"
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                placeholder="Starting point"
-                aria-describedby="from-description"
-                required
-              />
-            </div>
-            <p className="mt-2 text-sm text-gray-500" id="from-description">
-              Starting point of your amazing journey
-            </p>
-          </div>
-
-          <div className="max-w-md w-auto my-5">
-            <label
-              htmlFor="to"
-              className="block text-sm font-medium text-gray-70"
-            >
-              To
-            </label>
-            <div className="mt-1">
-              <input
-                type="text"
-                name="to"
-                id="to"
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                placeholder="Destination"
-                aria-describedby="to-description"
-                required
-              />
-            </div>
-            <p className="mt-2 text-sm text-gray-500" id="to-description">
-              Destination of your amazing journey
-            </p>
-          </div>
-          <button
-            type="submit"
-            className="w-full my-5 border rounded-md p-3 border-white-600 hover:bg-white hover:text-blue-600"
-          >
-            Search connections
-          </button>
-        </form>
+        <Form />
       </div>
 
       <div className={styles.center} />

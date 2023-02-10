@@ -36,12 +36,22 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "sourceType": "module",
-    "project": "tsconfig.json",
+    "project": "./tsconfig.json",
     "tsconfigRootDir": "./"
   },
   "rules": {
     // suppress errors for missing 'import React' in files
     "react/react-in-jsx-scope": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "": "never",
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }],
     // allow tsx syntax in ts files (for next.js project)
     "react/jsx-filename-extension": [
       1,
