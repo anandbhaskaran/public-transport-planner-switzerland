@@ -46,7 +46,7 @@ export default function Home() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form name="journey" onSubmit={handleSubmit}>
         <div className="w-auto my-5">
           <label htmlFor="from" className="block text-xl font-bold">
             From
