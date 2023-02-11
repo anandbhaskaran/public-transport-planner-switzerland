@@ -1,37 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Combobox } from "@headlessui/react";
 import { Station } from "@/interfaces/location";
-
-const stations: Station[] = [
-  {
-    id: "8500218",
-    name: "Olten",
-    score: undefined,
-    coordinate: {
-      type: "WGS84",
-      x: 47.351_936,
-      y: 7.907_707,
-    },
-    distance: undefined,
-    icon: "train",
-  },
-  {
-    id: "8572352",
-    name: "Olten, Bahnhof",
-    score: undefined,
-    coordinate: {
-      type: "WGS84",
-      x: 47.351_93,
-      y: 7.906_926,
-    },
-    distance: undefined,
-    icon: "bus",
-  },
-  // More stations...
-];
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(" ");
@@ -44,20 +16,34 @@ export default function Example({
   onSelectedStationChange: (station: Station) => void;
   label: string;
 }) {
+  const [stations, setStations] = useState<Station[]>([]);
   const [query, setQuery] = useState("");
+
+  const fetchStations = async (
+    queryParameter: string
+  ): Promise<{ stations: Station[] }> => {
+    const response = await fetch(`/api/locations?query=${queryParameter}`);
+    return response.json();
+  };
+
+  useEffect(() => {
+    if (query !== "") {
+      fetchStations(query).then((fetchedStations) => {
+        setStations(fetchedStations.stations);
+      });
+    } else {
+      setStations([]);
+    }
+  }, [query]);
+
+  const filteredStations = stations;
+
   const [selectedStation, setSelectedStation] = useState<Station | undefined>();
 
   const onSelectedValueChange = (station: Station) => {
     onSelectedStationChange(station);
     setSelectedStation(station);
   };
-
-  const filteredStations =
-    query === ""
-      ? stations
-      : stations.filter((station) => {
-          return station.name.toLowerCase().includes(query.toLowerCase());
-        });
 
   return (
     <Combobox as="div" value={selectedStation} onChange={onSelectedValueChange}>
@@ -66,6 +52,7 @@ export default function Example({
       </Combobox.Label>
       <div className="relative mt-1">
         <Combobox.Input
+          name={label.toLowerCase()}
           className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
           onChange={(event) => setQuery(event.target.value)}
           displayValue={(station: Station) => station?.name}
