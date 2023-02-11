@@ -2,8 +2,10 @@
 
 import { test, expect } from "@playwright/test";
 
-test("should have from and to in the main page", async ({ page }) => {
+test("should have two combobox and a button on the main page", async ({
+  page,
+}) => {
   await page.goto("/");
-  await expect(page.getByRole("textbox", { name: "from" })).toBeVisible();
-  await expect(page.getByRole("textbox", { name: "to" })).toBeVisible();
+  expect(await page.getByRole("combobox").count()).toEqual(2);
+  await expect(page.getByRole("button", { name: "search" })).toBeVisible();
 });
