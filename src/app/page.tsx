@@ -7,10 +7,10 @@ import JourneyForm from "./journey-form";
 
 export default function Home() {
   return (
-    <main className="grid min-h-full place-items-center bg-white py-24 px-6 sm:py-32 lg:px-8">
+    <main className="grid place-items-center bg-white py-20 px-6 sm:py-16 lg:px-8">
       <div className="text-center">
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-          Welcome to Swiss Travel planner
+          Swiss Travel planner
         </h1>
         <div className="">
           <a
@@ -32,7 +32,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="w-4/5 flex justify-evenly">
+      <div className="w-4/5 flex justify-evenly mt-8">
         <Image
           className="flex w-1/3"
           src="/location_search.svg"
