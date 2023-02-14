@@ -1,12 +1,12 @@
 export interface Station {
-  id: string;
+  id?: string;
   name: string;
-  score: number | undefined | null;
-  coordinate: {
+  score?: number | undefined | null;
+  coordinate?: {
     type: string;
     x: number;
     y: number;
   };
-  distance: number | undefined;
-  icon: string;
+  distance?: number | undefined;
+  icon?: string;
 }
