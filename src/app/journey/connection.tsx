@@ -31,11 +31,16 @@ function parseDurationString(timeString: string) {
 
 export default function ConnectionPanel({
   connection,
+  setSelectedConnection,
 }: {
   connection: Connection;
+  setSelectedConnection: (connection: Connection) => void;
 }) {
   return (
-    <div className="bg-white shadow sm:rounded-lg hover:shadow-lg hover:bg-indigo-50">
+    <div
+      className="bg-white shadow sm:rounded-lg hover:shadow-lg hover:bg-indigo-50"
+      onClick={() => setSelectedConnection(connection)}
+    >
       <div className="mb-4 py-5 sm:p-6 flex flex-row justify-between">
         <div className="flex flex-col mr-2">
           <div className="text-3xl font-bold leading-tight tracking-tight text-gray-900">

@@ -6,6 +6,8 @@ import JourneyForm from "@/app/components/journey-form";
 import JourneyOptions from "@/app/journey/journey-options";
 import { Station } from "@/interfaces/location";
 import { Connection } from "@/interfaces/connections";
+import SidePanel, { Size } from "@/app/components/side-panel";
+import ConnectionDetails from "./connection-details";
 
 export default function Journey() {
   const queriedFrom = useSearchParams().get("from");
@@ -16,7 +18,7 @@ export default function Journey() {
     if (!queriedFrom || !queriedTo) {
       router.push("/");
     }
-  });
+  },[]);
 
   const [fromStationName, setFromStationName] = useState<
     string | null | undefined
@@ -57,8 +59,16 @@ export default function Journey() {
     }
   }, [fromStationName, toStationName]);
 
+  const [selectedConnection, setSelectedConnection] = useState<Connection>();
+
+
   return (
     <main className="bg-white mx-auto py-20 px-6 sm:py-4 lg:px-8 max-w-6xl">
+      <ConnectionDetails
+        connection={selectedConnection}
+        setSelectedConnection={setSelectedConnection}
+      />
+
       <div className="flex justify-between align-top">
         <div className="w-1/4 flex self-start">
           <JourneyForm
@@ -68,7 +78,10 @@ export default function Journey() {
           />
         </div>
         <div className="w-3/4 flex pl-7 self-start">
-          <JourneyOptions connections={connections} />
+          <JourneyOptions
+            connections={connections}
+            setSelectedConnection={setSelectedConnection}
+          />
         </div>
       </div>
     </main>
