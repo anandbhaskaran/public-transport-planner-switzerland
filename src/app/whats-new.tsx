@@ -2,6 +2,13 @@ import SidePanel from "@/app/components/side-panel";
 
 const messages = [
   {
+    id: 3,
+    subject: "Implemented the connections page",
+    sender: "Anand Bhaskaran",
+    time: "14-Feb",
+    datetime: "2023-02-14T01:11",
+  },
+  {
     id: 2,
     subject: "Proxy API calls for autocompletion",
     sender: "Anand Bhaskaran",

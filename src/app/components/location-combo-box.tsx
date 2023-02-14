@@ -9,15 +9,27 @@ function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example({
-  label,
+export default function LocationComboBox({
+  initialStationName,
   onSelectedStationChange,
+  label,
 }: {
+  initialStationName: string | undefined | null;
   onSelectedStationChange: (station: Station) => void;
   label: string;
 }) {
   const [stations, setStations] = useState<Station[]>([]);
   const [query, setQuery] = useState("");
+  const placeholderStation: Station = {
+    name: "",
+  };
+
+  const [selectedStation, setSelectedStation] =
+    useState<Station>(placeholderStation);
+  const onSelectedValueChange = (station: Station) => {
+    onSelectedStationChange(station);
+    setSelectedStation(station);
+  };
 
   const fetchStations = async (
     queryParameter: string
@@ -25,6 +37,15 @@ export default function Example({
     const response = await fetch(`/api/locations?query=${queryParameter}`);
     return response.json();
   };
+
+  useEffect(() => {
+    if (initialStationName !== undefined && initialStationName !== null) {
+      fetchStations(initialStationName).then((fetchedStations) => {
+        setStations(fetchedStations.stations);
+        onSelectedValueChange(fetchedStations.stations[0]);
+      });
+    }
+  });
 
   useEffect(() => {
     if (query !== "") {
@@ -38,13 +59,6 @@ export default function Example({
 
   const filteredStations = stations;
 
-  const [selectedStation, setSelectedStation] = useState<Station | undefined>();
-
-  const onSelectedValueChange = (station: Station) => {
-    onSelectedStationChange(station);
-    setSelectedStation(station);
-  };
-
   return (
     <Combobox as="div" value={selectedStation} onChange={onSelectedValueChange}>
       <Combobox.Label className="block text-sm font-medium text-gray-700">
@@ -53,6 +67,7 @@ export default function Example({
       <div className="relative mt-1">
         <Combobox.Input
           name={label.toLowerCase()}
+          required
           className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
           onChange={(event) => setQuery(event.target.value)}
           displayValue={(station: Station) => station?.name}
@@ -68,7 +83,7 @@ export default function Example({
           <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
             {filteredStations.map((station) => (
               <Combobox.Option
-                key={station.id}
+                key={station.name}
                 value={station}
                 className={({ active }) =>
                   classNames(

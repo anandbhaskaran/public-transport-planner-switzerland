@@ -2,26 +2,29 @@ import React, { useState } from "react";
 import LocationComboBox from "./location-combo-box";
 import { Station } from "@/interfaces/location";
 
-export default function JourneyForm() {
+export default function JourneyForm({
+  from,
+  to,
+  onSearchConnection,
+}: {
+  from: string | undefined | null;
+  to: string | undefined | null;
+  onSearchConnection: (
+    from: Station | undefined,
+    to: Station | undefined
+  ) => void;
+}) {
   const [fromStation, setFromStation] = useState<Station | undefined>();
   const [toStation, setToStation] = useState<Station | undefined>();
-
   const handleSubmit = () => {
-    const data = {
-      from: fromStation,
-      to: toStation,
-    };
-    console.log(data);
+    onSearchConnection(fromStation, toStation);
   };
 
   return (
-    <form
-      name="journey"
-      onSubmit={handleSubmit}
-      className="w-1/3 flex flex-col mt-11 "
-    >
+    <form name="journey" onSubmit={handleSubmit} className="w-full">
       <div className="mt-1">
         <LocationComboBox
+          initialStationName={from}
           onSelectedStationChange={(station: Station) =>
             setFromStation(station)
           }
@@ -35,6 +38,7 @@ export default function JourneyForm() {
 
       <div className="my-5">
         <LocationComboBox
+          initialStationName={to}
           onSelectedStationChange={(station: Station) => setToStation(station)}
           label="To"
         />
