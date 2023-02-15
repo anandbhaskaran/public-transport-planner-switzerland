@@ -8,9 +8,9 @@ export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse<Connection[]>
 ) {
-  const { from, to } = request.query;
+  const { from, to, page } = request.query;
   const proxyResponse = await fetch(
-    `${TRANSPORT_API_CONNECTION_URL}?from=${from}&to=${to}`
+    `${TRANSPORT_API_CONNECTION_URL}?from=${from}&to=${to}&page=${page}`
   );
   await proxyResponse.json().then((stations) => {
     response.status(200).json(stations);

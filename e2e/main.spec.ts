@@ -16,7 +16,7 @@ test("autocomplete works as expected", async ({ page }) => {
   await page.goto("/");
   await page
     .getByRole("combobox", { name: "from" })
-    .type("olten", { delay: 100 });
+    .type("olten", { delay: 200 });
   expect(await page.getByRole("option").count()).toEqual(10);
 });
 

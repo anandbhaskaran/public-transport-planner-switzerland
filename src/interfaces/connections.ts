@@ -39,4 +39,5 @@ export interface Checkpoint {
   arrival: string;
   departure: string;
   delay: number;
+  platform: string | null;
 }

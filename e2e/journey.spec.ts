@@ -31,7 +31,7 @@ test("autocomplete works as expected", async ({ page }) => {
   await page.getByRole("combobox", { name: "from" }).clear();
   await page
     .getByRole("combobox", { name: "from" })
-    .type("olten", { delay: 150 });
+    .type("olten", { delay: 200 });
   expect(await page.getByRole("option").count()).toEqual(10);
 });
 
@@ -40,3 +40,27 @@ test("contains what's new section", async ({ page }) => {
   const allLinks = await page.getByRole("link").allInnerTexts();
   await expect(allLinks).toContain("What's new?");
 });
+
+test("contains list of connections", async ({ page }) => {
+  await page.goto("/journey?from=olten&to=zurich", {
+    waitUntil: "networkidle",
+  });
+  const connectionCount = await page.locator("#connection").count();
+  await expect(connectionCount).toEqual(4);
+});
+
+// test("contains load more button of connections", async ({ page }) => {
+//   await page.goto("/journey?from=olten&to=zurich", {
+//     waitUntil: "networkidle",
+//   });
+//   expect(await page.locator("#loadMore").count()).toEqual(1);
+// });
+//
+// test("can load more connections", async ({ page }) => {
+//   await page.goto("/journey?from=olten&to=zurich", {
+//     waitUntil: "networkidle",
+//   });
+//   page.locator("#loadMore").click({ delay: 300 });
+//   const connectionCount = await page.locator("#connection").count();
+//   await expect(connectionCount).toEqual(8);
+// });

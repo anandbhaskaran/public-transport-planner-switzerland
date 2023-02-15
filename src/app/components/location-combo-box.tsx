@@ -45,7 +45,7 @@ export default function LocationComboBox({
         onSelectedValueChange(fetchedStations.stations[0]);
       });
     }
-  });
+  }, []);
 
   useEffect(() => {
     if (query !== "") {

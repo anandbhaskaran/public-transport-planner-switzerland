@@ -11,12 +11,14 @@ export default function Journey() {
   const queriedFrom = useSearchParams().get("from");
   const queriedTo = useSearchParams().get("to");
   const router = useRouter();
+  const [fetchingConnection, setFetchingConnection] = useState<boolean>(true);
+
   // Check if from and to exist on monunt
   useEffect(() => {
     if (!queriedFrom || !queriedTo) {
       router.push("/");
     }
-  });
+  }, []);
 
   const [fromStationName, setFromStationName] = useState<
     string | null | undefined
@@ -26,7 +28,7 @@ export default function Journey() {
   );
 
   const [connections, setConnections] = useState<Connection[]>([]);
-
+  const [connectionPage, setConnectionPage] = useState<number>(0);
   const updateConnections = (
     from: Station | undefined,
     to: Station | undefined
@@ -35,11 +37,20 @@ export default function Journey() {
     setToStationName(to?.name);
   };
 
+  const requestMoreConnections = () => {
+    setConnectionPage(connectionPage + 1);
+  };
+
   const fetchConnections = async (
     from: string,
-    to: string
+    to: string,
+    page: number
   ): Promise<{ connections: Connection[] }> => {
-    const response = await fetch(`/api/connections?from=${from}&to=${to}`);
+    setFetchingConnection(true);
+    const response = await fetch(
+      `/api/connections?from=${from}&to=${to}&page=${page}`
+    );
+    setFetchingConnection(false);
     return response.json();
   };
 
@@ -47,15 +58,29 @@ export default function Journey() {
     if (fromStationName === null || fromStationName === undefined) {
       console.error("invalid from station name");
     } else if (toStationName === null || toStationName === undefined) {
-      console.error("invalid to station name");
+      console.error("Invalid to station name");
     } else {
-      fetchConnections(fromStationName, toStationName).then(
+      fetchConnections(fromStationName, toStationName, connectionPage).then(
         (fetchedConnections) => {
           setConnections(fetchedConnections.connections);
         }
       );
     }
   }, [fromStationName, toStationName]);
+
+  useEffect(() => {
+    if (fromStationName === null || fromStationName === undefined) {
+      console.error("invalid from station name");
+    } else if (toStationName === null || toStationName === undefined) {
+      console.error("Invalid to station name");
+    } else {
+      fetchConnections(fromStationName, toStationName, connectionPage).then(
+        (fetchedConnections) => {
+          setConnections([...connections, ...fetchedConnections.connections]);
+        }
+      );
+    }
+  }, [connectionPage]);
 
   return (
     <main className="bg-white mx-auto py-20 px-6 sm:py-4 lg:px-8 max-w-6xl">
@@ -67,8 +92,26 @@ export default function Journey() {
             onSearchConnection={updateConnections}
           />
         </div>
-        <div className="w-3/4 flex pl-7 self-start">
+        <div className="w-3/4 flex pl-7 self-start flex-col">
           <JourneyOptions connections={connections} />
+          {!fetchingConnection && (
+            <button
+              type="button"
+              name="loadMore"
+              id="loadMore"
+              className="nline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              onClick={requestMoreConnections}
+            >
+              More connections
+            </button>
+          )}
+          {fetchingConnection && (
+            <div className="w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+              <span className="mt-2 block text-sm font-medium text-gray-900">
+                Fetching connections...
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </main>
