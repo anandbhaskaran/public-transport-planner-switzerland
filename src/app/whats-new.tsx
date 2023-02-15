@@ -2,6 +2,20 @@ import SidePanel from "@/app/components/side-panel";
 
 const messages = [
   {
+    id: 4,
+    subject: "Implemented pagination",
+    sender: "Anand Bhaskaran",
+    time: "15-Feb",
+    datetime: "2023-02-15T00:58",
+  },
+  {
+    id: 3,
+    subject: "Implemented the connections details",
+    sender: "Anand Bhaskaran",
+    time: "15-Feb",
+    datetime: "2023-02-14T23:33",
+  },
+  {
     id: 3,
     subject: "Implemented the connections page",
     sender: "Anand Bhaskaran",
@@ -34,8 +48,8 @@ export default function WhatsNew({
 }) {
   return (
     <SidePanel
-      showWhatsNew={showWhatsNew}
-      setWhatsNew={setWhatsNew}
+      showPanel={showWhatsNew}
+      setShowPanel={setWhatsNew}
       title="What's New"
     >
       <div className="absolute inset-0 px-4 sm:px-6">
