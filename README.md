@@ -1,38 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Public transport planner Switzerland
+This is a [Next.js](https://nextjs.org/) project
+
+Demo: https://public-transport-planner-switzerland.vercel.app/
 
 ## Getting Started
 
-First, run the development server:
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Frontend
+This application has two pages that can be accessible at '/' and '/journey'
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`/`: The entry point of this page is available at `/src/app/page.tsx`
+`/journey`: The entry point of this page is available at `/src/app/journey.tsx`. If `from` and `to` are not passed as query parameters, this page will be redirected to `\`.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+The supporting components are available at `/src/app/components`
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+All the components uses `Tailwind CSS` for styling
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Backend
+This project uses Next.js backend as a proxy to [Swiss public transport API](https://transport.opendata.ch/docs.html)
+These proxy APIs are accessible under `/src/pages/api`
 
-## Learn More
+## Integration Tests
+To run the integration tests use the following command
+```bash
+npm run test:e2e
+```
 
-To learn more about Next.js, take a look at the following resources:
+Integration tests are written with [playwright](https://playwright.dev/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Linting
+This project uses EsLint to ensure standard code quality. By default, the IDE will pick up the configuration and show the errors and warnings on the code. 
+The following command will show the list of remaining errors and warnings
+```bash
+npm run lint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+You can also use the following commands to fix the lining errors.
+```bash
+npm run lintFix
+```
 
-## Deploy on Vercel
+## Process
+- Make your changes in a new branch and push
+- Create a PR in Github to `main` branc
+- Wait for the test to pass and in the meantime do a UX testing with the temporary URL provided by Vercel
+- Merge the PR if everything is as expected and tests are passing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Deployment
+This app uses [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) to deploy the application
+
+The `main` branch would be deployed to [public link](https://public-transport-planner-switzerland.vercel.app/)
+
+## Todo
+* [ ] Adapt CSS to be responsive on Mobile
+* [ ] Add unit tests
+* [ ] Add Lint tests to the CI pipeline
+* [ ] Implement [commit contention policy](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional)
